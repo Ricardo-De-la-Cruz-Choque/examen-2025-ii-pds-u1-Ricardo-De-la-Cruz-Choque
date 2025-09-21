@@ -1,4 +1,4 @@
-using backend.Data; 
+using backend.Data;
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,10 +8,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var conn = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=app.db";
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(conn));
-
 
 var jwtSection = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSection["Key"] ?? "EstaEsUnaClaveSuperSecreta12345678901234";
@@ -25,7 +23,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // Solo para dev
+    options.RequireHttpsMetadata = false; // ⚠️ Mejor activarlo en producción si usas HTTPS
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -41,11 +39,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-
 builder.Services.AddCors(opt =>
     opt.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
 );
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -70,7 +66,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -99,7 +94,6 @@ using (var scope = app.Services.CreateScope())
     db.SaveChanges();
 }
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -110,7 +104,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-
-app.MapGet("/", () => "API Examen funcionando 🚀");
+app.MapGet("/", () => "API Examen funcionando");
 
 app.Run();
