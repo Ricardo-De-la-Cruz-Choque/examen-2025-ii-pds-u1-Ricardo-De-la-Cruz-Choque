@@ -18,7 +18,7 @@ services:
       - key: Jwt__Audience
         value: backendUsers
       - key: ASPNETCORE_URLS
-        value: http://+:8080
+        value: http://0.0.0.0:8080
       - key: DOTNET_RUNNING_IN_CONTAINER
         value: "true"
       - key: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT
@@ -33,4 +33,4 @@ services:
     autoDeploy: true
     envVars:
       - key: VITE_API_URL
-        value: https://backend.onrender.com
+        value: https://examen-2025-ii-pds-u1-ricardo-de-la-cruz.onrender.com
