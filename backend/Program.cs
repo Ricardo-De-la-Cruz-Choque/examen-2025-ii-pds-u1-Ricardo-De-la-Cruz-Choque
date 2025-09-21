@@ -1,4 +1,4 @@
-using backend.Data;
+using backend.Data; 
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -71,6 +71,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -98,12 +99,9 @@ using (var scope = app.Services.CreateScope())
     db.SaveChanges();
 }
 
-// --- Middleware ---
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("AllowAll");
 
@@ -111,5 +109,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+app.MapGet("/", () => "API Examen funcionando 🚀");
 
 app.Run();
