@@ -1,21 +1,23 @@
-# Imagen base de .NET SDK para construir
+# Imagen base para .NET
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+
+# Imagen de SDK para build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiamos el .csproj y restauramos dependencias
+# Copiamos el archivo .csproj y restauramos dependencias
 COPY backend/backend.csproj ./backend/
 RUN dotnet restore ./backend/backend.csproj
 
 # Copiamos el resto del backend
 COPY backend ./backend
+WORKDIR /src/backend
+RUN dotnet publish -c Release -o /app/publish
 
-# Publicamos en modo Release
-RUN dotnet publish ./backend/backend.csproj -c Release -o /app
-
-# Imagen final de runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+# Imagen final
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app ./
-
-EXPOSE 8080
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "backend.dll"]

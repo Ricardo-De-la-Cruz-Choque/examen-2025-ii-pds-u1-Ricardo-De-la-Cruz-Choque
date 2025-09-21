@@ -1,9 +1,11 @@
 services:
+
   - type: web
     name: backend
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
+    autoDeploy: true
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
@@ -15,7 +17,12 @@ services:
         value: backend
       - key: Jwt__Audience
         value: backendUsers
-    autoDeploy: true
+      - key: ASPNETCORE_URLS
+        value: http://+:8080
+      - key: DOTNET_RUNNING_IN_CONTAINER
+        value: "true"
+      - key: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT
+        value: "true"
 
   - type: web
     name: frontend
@@ -23,6 +30,7 @@ services:
     plan: free
     buildCommand: npm install && npm run build
     staticPublishPath: frontend/dist
+    autoDeploy: true
     envVars:
       - key: VITE_API_URL
-        value: https://backend.onrender.com  # 👈 cambia con tu URL real del backend
+        value: https://backend.onrender.com
