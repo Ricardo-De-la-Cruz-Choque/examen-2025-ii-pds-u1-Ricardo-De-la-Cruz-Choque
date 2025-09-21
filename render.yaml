@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        value: Data Source=app.db
+      - key: Jwt__Key
+        value: EstaEsUnaClaveSuperSecreta12345678901234
+      - key: Jwt__Issuer
+        value: backend
+      - key: Jwt__Audience
+        value: backendUsers
+    autoDeploy: true
+
+  - type: web
+    name: frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://backend.onrender.com  # 👈 cambia con tu URL real del backend
