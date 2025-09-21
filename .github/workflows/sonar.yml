@@ -1,0 +1,21 @@
+name: Analizar con SonarQube
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar SonarScanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Analizar
+        run: |
+          dotnet sonarscanner begin /k:"examen" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet build
+          dotnet test --collect:"XPlat Code Coverage"
+          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

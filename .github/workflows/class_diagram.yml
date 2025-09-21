@@ -1,0 +1,23 @@
+name: Generar diagrama de clases
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  classes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar PlantUML
+        run: sudo apt-get install -y plantuml graphviz
+
+      - name: Generar diagrama de clases
+        run: plantuml class_diagram.puml
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: class-diagram
+          path: class_diagram.png

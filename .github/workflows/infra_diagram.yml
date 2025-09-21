@@ -1,0 +1,28 @@
+name: Generar diagrama de infraestructura
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  diagram:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: pip install diagrams
+
+      - name: Generar diagrama
+        run: python infra_diagram.py
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: infra-diagram
+          path: infra_diagram.png

@@ -1,0 +1,26 @@
+@startuml
+class User {
+  +Id : int
+  +Name : string
+  +Email : string
+  +Password : string
+  +Role : string
+}
+
+class Course {
+  +Id : int
+  +Title : string
+  +Description : string
+  +Instructor : string
+  +Price : decimal
+}
+
+class Enrollment {
+  +Id : int
+  +UserId : int
+  +CourseId : int
+}
+
+User "1" -- "many" Enrollment
+Course "1" -- "many" Enrollment
+@enduml

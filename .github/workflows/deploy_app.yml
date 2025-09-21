@@ -1,0 +1,28 @@
+name: Desplegar app
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Backend - build
+        run: |
+          cd backend
+          dotnet build
+
+      - name: Frontend - build
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Publicar frontend en Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/dist
