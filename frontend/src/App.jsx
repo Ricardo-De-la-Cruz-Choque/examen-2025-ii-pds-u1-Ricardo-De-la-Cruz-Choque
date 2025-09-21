@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [courses, setCourses] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL; // 🔑 Variable de entorno
 
   useEffect(() => {
-    fetch("http://localhost:5099/courses") // tu backend local
+    fetch(`${API_URL}/courses`)
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => console.error(err));
-  }, []);
+  }, [API_URL]);
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
